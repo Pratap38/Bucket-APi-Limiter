@@ -1,0 +1,22 @@
+from limit.apiLimit import TokenBucket
+import time
+
+# Bucket bana
+bucket = TokenBucket(capacity=5, refillRate=1)
+
+# Test 1: 6 requests rapidly
+print("=== Test 1: 6 Requests ===")
+for i in range(6):
+    result = bucket.allowUser()
+    print(f"Request {i+1}: {'✅ ALLOWED' if result else '❌ BLOCKED'}")
+
+# Test 2: Status check
+print(f"\nStatus: {bucket.get_status()}")
+
+# Test 3: Wait and retry
+print("\n⏳ Waiting 2 seconds...")
+time.sleep(2)
+print(f"Status: {bucket.get_status()}")
+
+result = bucket.allowUser()
+print(f"New Request: {'✅ ALLOWED' if result else '❌ BLOCKED'}")
